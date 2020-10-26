@@ -1,16 +1,16 @@
 name: docker
 on: 
   push:
-    branches: 
+    branches:
       - ops
 jobs:
-  test: 
+  test:
     runs-on: ubuntu-18.04
     steps:
       - 
         name: checkout
         uses: actions/checkout@v2
-      -
+      - 
         name: hasher
         run: |
           set -x
@@ -23,7 +23,7 @@ jobs:
               docker exec test ps | grep ruby && break
             done
           while true
-            do 
+            do
               sleep 10
               docker exec test netstat -patan | grep 8080.*LISTEN.*ruby && break
             done
@@ -34,9 +34,9 @@ jobs:
               sleep 10
               curl localhost:8080 | grep "HASHER running on" && break
             done
-          docker rm -f test         
-          docker network rm tes
-      -
+          docker rm -f test
+          docker network rm test
+      - 
         name: rng
         run: |
           set -x
@@ -49,7 +49,7 @@ jobs:
               docker exec test ps | grep python && break
             done
           while true
-            do 
+            do
               sleep 10
               docker exec test netstat -patan | grep 8080.*LISTEN.*python && break
             done
@@ -60,13 +60,39 @@ jobs:
               sleep 10
               curl localhost:8080 | grep "RNG running on" && break
             done
-          docker rm -f test         
-          docker network rm tes        
-      -
+          docker rm -f test
+          docker network rm test
+      - 
         name: webui
         run: |
           set -x
-          docker build -t test --no-cache rng/
+          docker build -t test --no-cache webui/
+          docker network create test
+          docker run --network test --name test -d test
+          while true
+            do
+              sleep 10
+              docker exec test ps | grep node && break
+            done
+          while true
+            do
+              sleep 10
+              docker ps | grep node.*8080.*test && break
+            done
+          docker rm -f test
+          docker run --network test --name test -d -p 8080:8080 test
+          while true
+            do
+              sleep 10
+              curl localhost:8080 | grep "index.html" && break
+            done
+          docker rm -f test
+          docker network rm test       
+      - 
+        name: worker
+        run: |
+          set -x
+          docker build -t test --no-cache worker/
           docker network create test
           docker run --network test --name test -d test
           while true
@@ -74,20 +100,7 @@ jobs:
               sleep 10
               docker exec test ps | grep python && break
             done
-          while true
-            do 
-              sleep 10
-              docker exec test netstat -patan | grep 8080.*LISTEN.*python && break
-            done
           docker rm -f test
-          docker run --network test --name test -d -p 8080:8080 test
-          while true
-            do
-              sleep 10
-              curl localhost:8080 | grep "RNG running on" && break
-            done
-          docker rm -f test         
-          docker network rm tes              
-      -
-        name:
-        run:
+          docker network rm test   
+     
+  
