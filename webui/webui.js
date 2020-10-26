@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var redis = require('redis');
-let REDIS = process.env.REDIS || "redis-svc";
+var REDIS = process.env.REDIS || "redis-svc";
 
 var client = redis.createClient(6379, REDIS);
 client.on("error", function (err) {
@@ -30,4 +30,3 @@ app.use(express.static('files'));
 var server = app.listen(8080, function () {
     console.log('WEBUI running on port 8080');
 });
-
