@@ -15,5 +15,3 @@ spec
         -
           image: openshiftacademiaonline/dockercoins-ops:worker-latest
           name: python
-
-  
