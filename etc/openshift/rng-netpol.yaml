@@ -7,7 +7,7 @@ spec:
     -
       from:
         -
-          podselector:
+          podSelector:
             matchLabels:
               app: worker
       ports:
