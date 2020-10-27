@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata: 
+metadata:
   name: hasher
 spec:
   ingress:
-    -
-      from:
-        -
-          podselector:
-            matchLabels:
-              app: worker
-      ports:
-        -
+    - 
+      from: 
+        - 
+          podSelector: 
+            matchLabels: 
+              app: worker              
+      ports: 
+        - 
           port: 8080
-  podSelector:
-    matchLabels:
+  podSelector: 
+    matchLabels: 
       app: hasher
