@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker
-spec
+spec:
   selector: 
     matchLabels:
       app: worker
