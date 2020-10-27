@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webui
-spec
+spec:
   selector: 
-    matchLabels:
+    matchLabels: 
       app: webui
   template:
-    metadata:
+    metadata: 
       labels: 
         app: webui
     spec:
