@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: 
+  name: redis
+spec:
+  ingress:
+    -
+      from:
+        -
+          podselector:
+            matchLabels:
+              app: webui
+        -
+          podselector:
+            matchLabels:
+              app: worker
+      ports:
+        -
+          port: 6379
+  podSelector:
+    matchLabels:
+      app: redis
